@@ -2,12 +2,14 @@
 
 # 📘 SistemaAlunos
 
-Este projeto é uma aplicação de console simples desenvolvida em C# .NET para gerenciar registros de alunos. Ele demonstra a integração de uma aplicação .NET com um banco de dados SQL Server hospedado no Azure SQL Database, realizando operações básicas de CRUD (Criar, Ler).
+Este projeto é uma aplicação de console simples desenvolvida em C# .NET para gerenciar registros de alunos. Ele demonstra a integração de uma aplicação .NET com um banco de dados SQL Server hospedado no Azure SQL Database, realizando operações básicas de CRUD (Create, Read, Update, Delete).
 
 ## 🚀 Funcionalidades
 
 -   **Listar Alunos:** Exibe todos os alunos cadastrados no banco de dados.
 -   **Adicionar Novo Aluno:** Permite inserir novos registros de alunos no banco de dados, incluindo nome, data de nascimento e curso.
+-   **Atualizar Aluno:** Permite modificar os dados de um aluno existente.
+-   **Excluir Aluno:** Permite remover um registro de aluno do banco de dados.
 -   **Conexão com Azure SQL Database:** Demonstra a configuração e o uso de uma string de conexão para interagir com um banco de dados remoto na nuvem.
 
 ## ✨ Tecnologias Utilizadas
@@ -77,9 +79,8 @@ Siga os passos abaixo para configurar e rodar o projeto:
 ### 3. Configuração do Projeto C#
 
 1.  **Clone o Repositório:**
-    ```
-    git clone https://github.com/seu-usuario/SistemaAluno.git
-
+    ```bash
+    git clone https://github.com/Aline-Fernandez/SistemaAlunos.git
     ```
     (Ou baixe e descompacte o projeto)
 2.  **Abra no Visual Studio:**
@@ -117,7 +118,9 @@ Siga as instruções no menu do console:
 
 -   Digite `1` para listar os alunos cadastrados.
 -   Digite `2` para adicionar um novo aluno (você será solicitado a fornecer Nome, Data de Nascimento e Curso).
--   Digite `3` para sair da aplicação.
+-   Digite `3` para atualizar os dados de um aluno existente.
+-   Digite `4` para excluir um aluno pelo ID.
+-   Digite `5` para sair da aplicação.
 
 ## 🚧 Possíveis Problemas e Soluções Rápidas
 
@@ -130,10 +133,10 @@ Siga as instruções no menu do console:
 
 Este projeto serve como base. Você pode expandi-lo adicionando:
 
--   Funcionalidades de `Atualizar` e `Excluir` alunos.
 -   Tratamento de erros mais robusto e logging.
 -   Uma interface de usuário (UI) mais amigável (ex: WPF, WinForms, ASP.NET Core).
 -   Validação de entrada de dados mais completa.
+-   Busca de aluno por ID ou nome.
 
 ## 🤝 Contribuindo
 
