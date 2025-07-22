@@ -1,149 +1,139 @@
-# Sistema de Gestão de Alunos
+# Sistema de Gestão de Alunos (Backend - Console)
 
-# 📘 SistemaAlunos
+Bem-vindo(a) ao projeto do **Sistema de Gestão de Alunos**!
 
-Este projeto é uma aplicação de console simples desenvolvida em C# .NET para gerenciar registros de alunos. Ele demonstra a integração de uma aplicação .NET com um banco de dados SQL Server hospedado no Azure SQL Database, realizando operações básicas de CRUD (Create, Read, Update, Delete).
+Este repositório contém o backend inicial de um sistema de gestão de alunos, desenvolvido em C# como uma aplicação de console. Ele se conecta a um banco de dados Azure SQL Server e implementa as operações fundamentais de CRUD (Criar, Ler, Atualizar, Excluir).
 
-## 🚀 Funcionalidades
+Este projeto está configurado para ser a base para a futura camada de API, que será consumida por um frontend moderno.
 
--   **Listar Alunos:** Exibe todos os alunos cadastrados no banco de dados.
--   **Adicionar Novo Aluno:** Permite inserir novos registros de alunos no banco de dados, incluindo nome, data de nascimento e curso.
--   **Atualizar Aluno:** Permite modificar os dados de um aluno existente.
--   **Excluir Aluno:** Permite remover um registro de aluno do banco de dados.
--   **Conexão com Azure SQL Database:** Demonstra a configuração e o uso de uma string de conexão para interagir com um banco de dados remoto na nuvem.
+## 📄 Sumário
 
-## ✨ Tecnologias Utilizadas
+* [Visão Geral do Projeto](#1-visão-geral-do-projeto)
+* [Tecnologias Utilizadas](#2-tecnologias-utilizadas)
+* [Configuração do Ambiente (Backend)](#3-configuração-do-ambiente-backend)
 
--   **C#**: Linguagem de programação principal.
--   **.NET 8**: Framework de desenvolvimento da aplicação console.
--   **Azure SQL Database**: Serviço de banco de dados relacional na nuvem da Microsoft.
--   **SQL Server Management Studio (SSMS)**: Ferramenta para gerenciar e interagir com o banco de dados SQL.
--   **Microsoft.Data.SqlClient**: Pacote NuGet para conexão e operações com SQL Server em .NET.
+  * [Pré-requisitos](#pré-requisitos)
+  * [Configuração do Banco de Dados Azure SQL](#configuração-do-banco-de-dados-azure-sql)
+  * [Configuração do Projeto C#](#configuração-do-projeto-c)
+* [Como Executar o Backend (Console)](#como-executar-o-backend-console)
+* [Para o Desenvolvedor Frontend](#4-para-o-desenvolvedor-frontend)
+* [Próximos Passos Sugeridos para o Backend (API)](#próximos-passos-sugeridos-para-o-backend-api)
+* [Estrutura de Dados (Model)](#estrutura-de-dados-model)
+* [Regras de Negócio Importantes](#regras-de-negócio-importantes)
+* [Camada de Acesso a Dados (Repository)](#camada-de-acesso-a-dados-repository)
+* [Colaboração](#5-colaboração)
+* [Contato](#6-contato)
 
-## 📋 Pré-requisitos
+## 1. Visão Geral do Projeto
 
-Para rodar este projeto, você precisará ter o seguinte instalado:
+O objetivo principal deste projeto é gerenciar informações de alunos de forma eficiente. A versão atual é um protótipo de console que demonstra a interação com o banco de dados. A próxima fase envolve a criação de uma API RESTful a partir deste backend para permitir a integração com uma interface de usuário mais rica e interativa.
 
--   **Visual Studio**: IDE com a carga de trabalho ".NET desktop development" (versão 2022 ou superior recomendada).
--   **.NET 8 SDK**: Kit de Desenvolvimento de Software para .NET 8.
--   **SQL Server Management Studio (SSMS)**: Para gerenciar o banco de dados.
--   **Conta Azure**: Com permissões para criar recursos (especificamente Azure SQL Database). Recomenda-se o uso da conta **Azure for Students** para recursos gratuitos ou de baixo custo.
+## 2. Tecnologias Utilizadas
 
-## ⚙️ Configuração e Instalação
+**Backend (Atual):**
 
-Siga os passos abaixo para configurar e rodar o projeto:
+* Linguagem: C#
+* Plataforma: .NET (Console Application)
+* Banco de Dados: Azure SQL Database (SQL Server)
+* Acesso a Dados: Microsoft.Data.SqlClient (ADO.NET)
 
-### 1. Configuração do Azure SQL Database
+**Frontend (Futuro):**
 
-1.  **Crie um Servidor Azure SQL:**
-    * No Portal do Azure, procure por "SQL Server" e crie um novo.
-    * Nome do Servidor (ex: `servidor-dev-2025-db`).
-    * Defina um **Login de administrador do servidor** (ex: `admin_db`) e uma **senha forte**. **Guarde essa senha!**
-    * Escolha uma **Região** próxima a você (ex: `Brazil South`).
-2.  **Crie um Banco de Dados SQL:**
-    * Dentro do servidor SQL recém-criado, adicione um novo banco de dados.
-    * Nome do Banco de Dados (ex: `MeuSistemaDB`).
-    * **Importante**: Em "Nível de computação", selecione **"Sem Servidor" (Serverless)** para otimização de custos e auto-pausa.
-    * Desabilite o "Microsoft Defender para SQL" e "Habilitar enclaves seguros" para evitar custos adicionais.
-3.  **Configure o Firewall do Servidor:**
-    * No seu servidor SQL no Azure, vá em "Rede".
-    * Certifique-se de que "Permitir que serviços e recursos do Azure acessem este servidor" esteja **DESATIVADO**.
-    * **Adicione seu endereço IP atual:** Clique em "Adicionar endereço IP do cliente atual" (`seu.ip.publico.aqui`) e clique em "Salvar". Isso permitirá que seu computador se conecte.
-4.  **Obtenha a String de Conexão:**
-    * No seu **Banco de Dados SQL** (`MeuSistemaDB`), vá em "Cadeias de conexão".
-    * Copie a string da aba **"ADO.NET"**. Ela será semelhante a:
-        `Server=tcp:servidor-dev-2025-db.database.windows.net,1433;Initial Catalog=MeuSistemaDB;Persist Security Info=False;User ID=admin_db;Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;`
+* (Preencher com as tecnologias planejadas: React, Angular, etc.)
 
-### 2. Configuração do Schema do Banco de Dados (via SSMS)
+## 3. Configuração do Ambiente (Backend)
 
-1.  **Conecte-se ao Azure SQL Database no SSMS:**
-    * Abra o SSMS.
-    * Clique em "Conectar" -> "Mecanismo de Banco de Dados".
-    * Nome do Servidor: `servidor-dev-2025-db.database.windows.net`
-    * Autenticação: `Autenticação do SQL Server`
-    * Login: `admin_db`
-    * Senha: `SuaSenhaForteAqui`
-2.  **Crie a Tabela `Alunos`:**
-    * No "Explorador de Objetos" do SSMS, **clique com o botão direito no seu banco de dados `MeuSistemaDB`** (NÃO no `master`!) e selecione "Nova Consulta".
-    * Cole e execute o seguinte script SQL:
-        ```sql
-        CREATE TABLE Alunos (
-            Id INT PRIMARY KEY IDENTITY(1,1),
-            Nome VARCHAR(100) NOT NULL,
-            DataNascimento DATE,
-            Curso VARCHAR(100)
-        );
-        ```
-    * **Verifique a tabela:** Expanda `MeuSistemaDB` -> `Tabelas` e confirme que `dbo.Alunos` está listado.
+### Pré-requisitos
 
-### 3. Configuração do Projeto C#
+* **Visual Studio**: Versão 2019 ou superior, com workloads ".NET desktop development" e "Azure development"
+* **SQL Server Management Studio (SSMS)**
+* **Conta Azure** com banco de dados Azure SQL criado
 
-1.  **Clone o Repositório:**
-    ```bash
-    git clone https://github.com/Aline-Fernandez/SistemaAlunos.git
-    ```
-    (Ou baixe e descompacte o projeto)
-2.  **Abra no Visual Studio:**
-    * Abra o arquivo de solução `.sln` no Visual Studio.
-3.  **Instale o Pacote NuGet:**
-    * No Visual Studio, vá em `Ferramentas` > `Gerenciador de Pacotes NuGet` > `Gerenciar Pacotes NuGet para a Solução...`.
-    * Na aba `Procurar`, pesquise por `Microsoft.Data.SqlClient` e instale a versão mais recente para o seu projeto `SistemaAlunos`.
-4.  **Atualize a String de Conexão:**
-    * Abra o arquivo `Data/Conexao.cs`.
-    * Substitua `"SUA_STRING_DE_CONEXÃO_AQUI"` pela string de conexão completa que você obteve do Portal do Azure.
-    * **Lembre-se de substituir `{your_password}` pela sua senha real.**
-    * O arquivo deve ficar assim:
-        ```csharp
-        using Microsoft.Data.SqlClient; // Correto!
+### Configuração do Banco de Dados Azure SQL
 
-        namespace SistemaAlunos.Data
-        {
-            public class Conexao
-            {
-                private static string connectionString = "Server=tcp:servidor-dev-2025-db.database.windows.net,1433;Initial Catalog=MeuSistemaDB;Persist Security Info=False;User ID=admin_db;Password=[SUA_SENHA_AQUI];MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+Conecte-se ao banco de dados `SistemaAlunoDB` com o SSMS e execute:
 
-                public static SqlConnection ObterConexao()
-                {
-                    return new SqlConnection(connectionString);
-                }
-            }
-        }
-        ```
-5.  **Verifique os Usings:**
-    * Confirme que em `Conexao.cs`, `AlunoRepository.cs` e `Program.cs`, a linha de importação do SQL Client é `using Microsoft.Data.SqlClient;`.
+```sql
+USE SistemaAlunoDB;
 
-## 💡 Uso da Aplicação
+CREATE TABLE Alunos (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    Nome VARCHAR(100) NOT NULL,
+    DataNascimento DATE,
+    Curso VARCHAR(100)
+);
 
-Siga as instruções no menu do console:
+ALTER TABLE dbo.Alunos ADD CPF VARCHAR(14);
 
--   Digite `1` para listar os alunos cadastrados.
--   Digite `2` para adicionar um novo aluno (você será solicitado a fornecer Nome, Data de Nascimento e Curso).
--   Digite `3` para atualizar os dados de um aluno existente.
--   Digite `4` para excluir um aluno pelo ID.
--   Digite `5` para sair da aplicação.
+-- Atualizar CPFs nulos para valores únicos, se necessário
+-- UPDATE dbo.Alunos SET CPF = '000.000.000-01' WHERE Id = 1; etc...
 
-## 🚧 Possíveis Problemas e Soluções Rápidas
+ALTER TABLE dbo.Alunos ADD CONSTRAINT UQ_Alunos_CPF UNIQUE (CPF);
+-- Para tornar obrigatório:
+-- ALTER TABLE dbo.Alunos ALTER COLUMN CPF VARCHAR(14) NOT NULL;
+```
 
--   **"Login failed for user 'admin_db'"**: Verifique seu nome de usuário (`admin_db`) e senha na string de conexão e no SSMS.
--   **"Cannot open server 'servidor-dev-2025-db' requested by the login"**: Problema de Firewall. Verifique se seu IP atual está adicionado nas regras de firewall do servidor no Azure.
--   **"Não está achando o objeto Alunos"**: Verifique se `Initial Catalog` na string de conexão aponta para o nome EXATO do seu banco de dados (`MeuSistemaDB`). Confirme também que a tabela `dbo.Alunos` realmente foi criada dentro de `MeuSistemaDB` (e não no banco de dados `master`!) no SSMS.
--   **`System.IndexOutOfRangeException: 'NomeDaColunaErrada'`**: Há um erro de digitação no nome de uma coluna que seu código está tentando ler/gravar. Renomeie a coluna no banco de dados para o nome correto ou ajuste a propriedade e leitura no C# (a primeira opção é a mais recomendada).
+### Configuração do Projeto C\#
 
-## ⏭️ Próximos Passos (Melhorias Futuras)
+1. Clone ou baixe o repositório
+2. Abra o arquivo `.sln` no Visual Studio
+3. Restaure os pacotes NuGet
+4. Atualize a `connectionString` em `SistemaAlunos/Data/Conexao.cs` com seus dados reais:
 
-Este projeto serve como base. Você pode expandi-lo adicionando:
+```csharp
+private static string connectionString = "Server=tcp:SEU_SERVIDOR.database.windows.net,1433;Initial Catalog=SistemaAlunoDB;Persist Security Info=False;User ID=SEU_USUARIO;Password=SUA_SENHA;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+```
 
--   Tratamento de erros mais robusto e logging.
--   Uma interface de usuário (UI) mais amigável (ex: WPF, WinForms, ASP.NET Core).
--   Validação de entrada de dados mais completa.
--   Busca de aluno por ID ou nome.
+## Como Executar o Backend (Console)
 
-## 🤝 Contribuindo
+Pressione `F5` no Visual Studio ou clique em **Iniciar Depuração** para executar o sistema no console. O menu interativo permite operações CRUD diretamente com o banco de dados.
 
-Se você deseja contribuir para este projeto, sinta-se à vontade para fazer um fork, implementar melhorias e enviar um Pull Request.
+## 4. Para o Desenvolvedor Frontend
 
-## 📄 Licença
+Este backend serve como base para uma futura API RESTful. A transformação ideal seria a criação de um projeto ASP.NET Core Web API, que reutilize os modelos e repositórios existentes.
 
-Este projeto está licenciado sob a Licença MIT.
+## Próximos Passos Sugeridos para o Backend (API)
 
----
+* Criar um projeto ASP.NET Core Web API
+* Reutilizar classes `Models`, `Data`, `Repositories` em uma Class Library
+* Expor métodos de CRUD como endpoints REST (GET, POST, PUT, DELETE)
+
+## Estrutura de Dados (Model)
+
+```csharp
+public class Aluno
+{
+    public int Id { get; set; }
+    public string Nome { get; set; }
+    public DateTime DataNascimento { get; set; }
+    public string Curso { get; set; }
+    public string CPF { get; set; }
+}
+```
+
+## Regras de Negócio Importantes
+
+* **CPF único:** Validação garantida pelo banco (constraint UNIQUE). Evite duplicidade.
+* **ID automático:** O campo `Id` é gerado automaticamente pelo banco.
+
+## Camada de Acesso a Dados (Repository)
+
+Classe `AlunoRepository` com os seguintes métodos:
+
+* `ListarTodos()`
+* `Adicionar(Aluno aluno)`
+* `Atualizar(Aluno aluno)`
+* `Excluir(int id)`
+* `BuscarPorId(int id)`
+* `ExisteCPF(string cpf)`
+
+## 5. Colaboração
+
+* Crie branches por funcionalidade: `git checkout -b feature/nova-feature`
+* Commits pequenos e claros
+* Pull Requests com revisão antes do merge
+
+## 6. Contato
+
+**Aline** – \[Seu LinkedIn ou e-mail aqui]
+**Frontend Dev (se houver)** – \[Contato dele aqui]
