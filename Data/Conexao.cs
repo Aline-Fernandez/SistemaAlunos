@@ -3,7 +3,7 @@
 namespace SistemaAlunos.Data {
     public class Conexao {
 
-        private static string connectionString = "Server=tcp:servidor-aline-dev-2025.database.windows.net,1433;Initial Catalog=SistemaAlunoDB;Persist Security Info=False;User ID=admin.aline;Password=emSZRT9Sf3sM@i9;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        private static string connectionString = "Server=tcp:servidor-aline-dev-2025.database.windows.net,1433;Initial Catalog=SistemaAlunoDB;Persist Security Info=False;User ID=admin.aline;Password=azure@Wilson05;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         public static SqlConnection ObterConexao() {
             //Retorna um novo objeto SqlConnection usando a string de conexão
