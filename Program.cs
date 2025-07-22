@@ -1,23 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using SistemaAlunos.Models;
-using SistemaAlunos.Repositories; // Para acessar a classe AlunoRepository
+using SistemaAlunos.Repositories;
 
-namespace SistemaAlunos {
-    class Program {
-        static void Main(string[] args) {
+namespace SistemaAlunos
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
             AlunoRepository alunoRepository = new AlunoRepository();
             int opcao;
 
-            do {
+            do
+            {
+                Console.Clear(); // Limpa o console a cada iteração do menu
                 Console.WriteLine("\n--- Sistema de Gestão de Alunos ---");
                 Console.WriteLine("1. Listar Alunos");
                 Console.WriteLine("2. Adicionar Novo Aluno");
-                Console.WriteLine("3. Sair");
+                Console.WriteLine("3. Atualizar Aluno");
+                Console.WriteLine("4. Excluir Aluno");
+                Console.WriteLine("5. Sair");
                 Console.Write("Escolha uma opção: ");
 
-                if (int.TryParse(Console.ReadLine(), out opcao)) {
-                    switch (opcao) {
+                if (int.TryParse(Console.ReadLine(), out opcao))
+                {
+                    switch (opcao)
+                    {
                         case 1:
                             ListarAlunos(alunoRepository);
                             break;
@@ -25,6 +34,12 @@ namespace SistemaAlunos {
                             AdicionarAluno(alunoRepository);
                             break;
                         case 3:
+                            AtualizarAluno(alunoRepository);
+                            break;
+                        case 4:
+                            ExcluirAluno(alunoRepository);
+                            break;
+                        case 5:
                             Console.WriteLine("Saindo do sistema. Até mais!");
                             break;
                         default:
@@ -32,31 +47,47 @@ namespace SistemaAlunos {
                             break;
                     }
                 }
-                else {
+                else
+                {
                     Console.WriteLine("Entrada inválida. Por favor, digite um número.");
                 }
 
-                Console.WriteLine("\nPressione qualquer tecla para continuar...");
-                Console.ReadKey();
+                if (opcao != 5) // Não pausa se a opção for sair
+                {
+                    Console.WriteLine("\nPressione qualquer tecla para continuar...");
+                    Console.ReadKey();
+                }
 
-            } while (opcao != 3);
+            } while (opcao != 5);
         }
 
-        static void ListarAlunos(AlunoRepository repository) {
+        static void ListarAlunos(AlunoRepository repository)
+        {
             Console.WriteLine("\n--- Lista de Alunos ---");
-            List<Aluno> alunos = repository.ListarTodos();
+            try
+            {
+                List<Aluno> alunos = repository.ListarTodos();
 
-            if (alunos.Count == 0) {
-                Console.WriteLine("Nenhum aluno cadastrado.");
-                return;
+                if (alunos.Count == 0)
+                {
+                    Console.WriteLine("Nenhum aluno cadastrado.");
+                    return;
+                }
+
+                foreach (var aluno in alunos)
+                {
+                    Console.WriteLine($"ID: {aluno.Id}, Nome: {aluno.Nome}, Data Nasc.: {aluno.DataNascimento:dd/MM/yyyy}, Curso: {aluno.Curso}");
+                }
             }
-
-            foreach (var aluno in alunos) {
-                Console.WriteLine($"ID: {aluno.Id}, Nome: {aluno.Nome}, Data Nasc.: {aluno.DataNascimento:dd/MM/yyyy}, Curso: {aluno.Curso}");
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao listar alunos: {ex.Message}");
+                Console.WriteLine("Detalhes do erro: " + ex.ToString());
             }
         }
 
-        static void AdicionarAluno(AlunoRepository repository) {
+        static void AdicionarAluno(AlunoRepository repository)
+        {
             Console.WriteLine("\n--- Adicionar Novo Aluno ---");
             Aluno novoAluno = new Aluno();
 
@@ -64,25 +95,106 @@ namespace SistemaAlunos {
             novoAluno.Nome = Console.ReadLine();
 
             Console.Write("Data de Nascimento (DD/MM/AAAA): ");
-            // Tenta converter a string para DateTime
-            if (DateTime.TryParseExact(Console.ReadLine(), "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime dataNascimento)) {
+            if (DateTime.TryParseExact(Console.ReadLine(), "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime dataNascimento))
+            {
                 novoAluno.DataNascimento = dataNascimento;
             }
-            else {
+            else
+            {
                 Console.WriteLine("Formato de data inválido. Usando data padrão (hoje).");
-                novoAluno.DataNascimento = DateTime.Today; // Data padrão em caso de erro
+                novoAluno.DataNascimento = DateTime.Today;
             }
 
             Console.Write("Curso: ");
             novoAluno.Curso = Console.ReadLine();
 
-            try {
+            try
+            {
                 repository.Adicionar(novoAluno);
                 Console.WriteLine("Aluno adicionado com sucesso!");
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Console.WriteLine($"Erro ao adicionar aluno: {ex.Message}");
-                Console.WriteLine("Detalhes do erro: " + ex.ToString()); // Para ver o erro completo, útil em desenvolvimento
+                Console.WriteLine("Detalhes do erro: " + ex.ToString());
+            }
+        }
+
+        static void AtualizarAluno(AlunoRepository repository)
+        {
+            Console.WriteLine("\n--- Atualizar Aluno ---");
+            Console.Write("Digite o ID do aluno que deseja atualizar: ");
+            if (int.TryParse(Console.ReadLine(), out int idParaAtualizar))
+            {
+                // O ideal aqui seria buscar o aluno pelo ID primeiro para preencher os dados atuais
+                // Mas para simplificar, vamos pedir todos os dados novamente
+
+                Aluno alunoAtualizado = new Aluno { Id = idParaAtualizar };
+
+                Console.Write("Novo Nome: ");
+                alunoAtualizado.Nome = Console.ReadLine();
+
+                Console.Write("Nova Data de Nascimento (DD/MM/AAAA): ");
+                if (DateTime.TryParseExact(Console.ReadLine(), "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime novaDataNascimento))
+                {
+                    alunoAtualizado.DataNascimento = novaDataNascimento;
+                }
+                else
+                {
+                    Console.WriteLine("Formato de data inválido. Usando data padrão (hoje).");
+                    alunoAtualizado.DataNascimento = DateTime.Today;
+                }
+
+                Console.Write("Novo Curso: ");
+                alunoAtualizado.Curso = Console.ReadLine();
+
+                try
+                {
+                    repository.Atualizar(alunoAtualizado);
+                    Console.WriteLine($"Aluno com ID {idParaAtualizar} atualizado com sucesso!");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erro ao atualizar aluno: {ex.Message}");
+                    Console.WriteLine("Detalhes do erro: " + ex.ToString());
+                }
+            }
+            else
+            {
+                Console.WriteLine("ID inválido.");
+            }
+        }
+
+        static void ExcluirAluno(AlunoRepository repository)
+        {
+            Console.WriteLine("\n--- Excluir Aluno ---");
+            Console.Write("Digite o ID do aluno que deseja excluir: ");
+            if (int.TryParse(Console.ReadLine(), out int idParaExcluir))
+            {
+                Console.Write($"Tem certeza que deseja excluir o aluno com ID {idParaExcluir}? (S/N): ");
+                string confirmacao = Console.ReadLine().ToUpper();
+
+                if (confirmacao == "S")
+                {
+                    try
+                    {
+                        repository.Excluir(idParaExcluir);
+                        Console.WriteLine($"Aluno com ID {idParaExcluir} excluído com sucesso!");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Erro ao excluir aluno: {ex.Message}");
+                        Console.WriteLine("Detalhes do erro: " + ex.ToString());
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Exclusão cancelada.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("ID inválido.");
             }
         }
     }
